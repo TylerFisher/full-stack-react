@@ -1,0 +1,30 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[requires]
+
+python_version = "3.6"
+
+
+[packages]
+
+pytest = "*"
+"flake8" = "*"
+django = ">=2.0"
+djangorestframework = "*"
+dj-database-url = "*"
+"psycopg2" = "*"
+fullstack = {path = "./..", editable = true}
+django-uuslug = "*"
+us = "*"
+pycountry = "*"
+tqdm = "*"
+requests = "*"
+
+
+[dev-packages]
+
