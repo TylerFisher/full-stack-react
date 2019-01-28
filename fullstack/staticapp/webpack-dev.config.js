@@ -1,73 +1,111 @@
 const path = require('path');
-const webpack = require('webpack');
 const glob = require('glob');
 const _ = require('lodash');
+const portfinder = require('portfinder');
 
-module.exports = port => ({
-  resolve: {
-    extensions: ['*', '.js', '.jsx', '.json'],
-  },
+portfinder.basePort = 3000;
+
+const config = (env, argv, port) => ({
+  mode: 'development',
+  devtool: 'cheap-eval-source-map',
   entry: _.zipObject(
     glob.sync('./src/js/main-*.js*').map(f => path.basename(f, path.extname(f))),
     glob.sync('./src/js/main-*.js*').map(f => [
-      `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr&reload=true`,
+      '@babel/polyfill',
+      'whatwg-fetch',
       f,
-    ]),
+    ])
   ),
   output: {
-    path: '/',
+    path: path.resolve(__dirname, '../static/fullstack'),
     filename: 'js/[name].js',
+  },
+  devServer: {
+    compress: true,
+    port,
+    open: true,
+    contentBase: false,
+    proxy: {
+      '/': {
+        target: 'http://localhost:8000',
+      },
+      '/ws': {
+        target: 'ws://localhost:8000/',
+        ws: true,
+      },
+    },
+    publicPath: '/static/fullstack/',
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
+        test: /\.(js|jsx)$/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              [
-                'env',
-                {
-                  targets: {
-                    browsers: ['last 2 versions'],
-                  },
-                  debug: true,
-                  modules: false,
+              ['@babel/env', {
+                'targets': {
+                  'browsers': 'last 2 versions',
                 },
-              ],
-              'react',
-              'stage-0',
-              'airbnb',
+              }],
+              '@babel/react',
+            ],
+            plugins: [
+              '@babel/proposal-class-properties',
             ],
           },
         },
-      },
-      {
+      }, {
+        test: /theme.*\.scss$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+          },
+        }, {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+          },
+        }],
+      }, {
         test: /\.scss$/,
-        use: [
-          {
-            loader: 'style-loader',
+        exclude: /theme.*\.scss$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
           },
-          {
-            loader: 'postcss-loader',
+        }, {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
           },
-          {
-            loader: 'sass-loader',
+        }],
+      }, {
+        test: /\.css$/,
+        use: [{
+          loader:  'style-loader',
+        }, {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
           },
-        ],
-      },
+        }],
+      }
     ],
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.ProvidePlugin({
-      fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch',
-    }),
-  ],
-  stats: 'minimal',
-  devtool: 'cheap-module-eval-source-map',
-  watch: true,
 });
+
+module.exports = (env, argv) =>
+  portfinder.getPortPromise()
+    .then(port => config(env, argv, port));

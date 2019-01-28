@@ -1,6 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 
+from .views import Home
 from .viewsets import (
     BodyViewSet,
     DivisionViewSet,
@@ -22,4 +23,4 @@ router.register(r"parties", PartyViewSet)
 router.register(r"people", PersonViewSet)
 
 
-urlpatterns = [path("api/", include(router.urls))]
+urlpatterns = [path("api/", include(router.urls)), path("", Home.as_view())]
