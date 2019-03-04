@@ -12,8 +12,6 @@ const MasterApp = () => (
   </Provider>
 );
 
-console.log('hey');
-
 render(
   <MasterApp />,
   document.getElementById('app')

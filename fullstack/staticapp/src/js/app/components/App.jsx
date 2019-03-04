@@ -1,10 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import orm from '../stores/models';
 
 const App = (props) => {
-  console.log('app');
+  const session = orm.session(props.db.orm);
   return (
     <div />
-  )
-}
+  );
+};
 
-export default App;
+const mapStateToProps = state => ({
+  db: state,
+});
+
+export default connect(mapStateToProps)(App);
