@@ -7,8 +7,12 @@ import store from './app/stores/';
 import '../scss/main.scss';
 
 const MasterApp = () => (
-  <App />
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
+
+console.log('hey');
 
 render(
   <MasterApp />,

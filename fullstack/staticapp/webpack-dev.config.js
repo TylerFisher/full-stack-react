@@ -17,7 +17,7 @@ const config = (env, argv, port) => ({
     ])
   ),
   output: {
-    path: path.resolve(__dirname, '../static/fullstack'),
+    path: path.resolve(__dirname, '/static/fullstack'),
     filename: 'js/[name].js',
   },
   devServer: {
