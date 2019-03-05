@@ -6,7 +6,7 @@ class Table extends React.Component {
     super(props);
     this.state = {
       currentBody: 'senate',
-    }
+    };
 
     this.changeBody = this.changeBody.bind(this);
   }
@@ -20,15 +20,9 @@ class Table extends React.Component {
   render() {
     const filteredOffices = this.props.offices.filter(office => office.body.slug === this.state.currentBody);
 
-    filteredOffices.sort((a, b) => {
-      if (a.division.code > b.division.code) return 1;
-      if (b.division.code > a.division.code) return -1;
-      return 0;
-    });
-
     return (
-      <div className="wrapper">
-        <button className="change-body" onClick={this.changeBody}>Change body</button>
+      <div className='wrapper'>
+        <button className='change-body' onClick={this.changeBody}>Change body</button>
         <table>
           <thead>
             <tr>
