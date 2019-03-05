@@ -3,6 +3,12 @@ import Row from './Row';
 
 class Table extends React.Component {
   render() {
+    const sortedOffices = this.props.offices.sort((a, b) => {
+      if (a.division.code > b.division.code) return 1;
+      if (b.division.code > a.division.code) return -1;
+      return 0;
+    });
+
     return (
       <table>
         <thead>
