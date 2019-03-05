@@ -1,3 +1,4 @@
+import { createSelector } from 'redux-orm';
 import * as types from './constants';
 import orm from '../models/';
 
@@ -44,3 +45,26 @@ export default(dbState, action) => {
   }
   return session.state;
 };
+
+export const officeSelector = createSelector(
+  orm,
+  state => state.orm,
+  session => {
+    return session.Office.all().toModelArray().map(office => {
+      if (!office.division) return null;
+      const officeholder = office.officeholderSet.toModelArray()[0];
+      if (!officeholder.person) return null;
+
+      const obj = office.serialize();
+
+      return Object.assign({}, obj, {
+        division: office.division.serialize(),
+        body: office.body.serialize(),
+        officeholder: {
+          person: officeholder.person.serialize(),
+          party: officeholder.party.serialize(),
+        },
+      });
+    });
+  }
+);

@@ -1,16 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import orm from '../stores/models';
+import { officeSelector } from '../stores/orm/reducers';
+import Table from './table';
 
 const App = (props) => {
-  const session = orm.session(props.db.orm);
+  if (props.offices.length === 0) return null;
+  if (props.offices.length > 0 && !props.offices[0]) return null;
   return (
-    <div />
+    <Table offices={props.offices} />
   );
 };
 
 const mapStateToProps = state => ({
-  db: state,
+  offices: officeSelector(state),
 });
 
 export default connect(mapStateToProps)(App);
