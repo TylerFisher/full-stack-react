@@ -94,14 +94,14 @@ const config = (env, argv, port) => ({
       }, {
         test: /\.css$/,
         use: [{
-          loader:  'style-loader',
+          loader: 'style-loader',
         }, {
           loader: 'css-loader',
           options: {
             sourceMap: true,
           },
         }],
-      }
+      },
     ],
   },
 });

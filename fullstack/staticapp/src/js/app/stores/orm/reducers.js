@@ -9,7 +9,6 @@ export default(dbState, action) => {
 
   const session = orm.session(dbState);
   const {
-    Body,
     Division,
     DivisionLevel,
     Office,
@@ -19,9 +18,6 @@ export default(dbState, action) => {
   } = session;
 
   switch (action.type) {
-    case types.CREATE_BODIES:
-      action.bodies.map(body => Body.upsert(body));
-      break;
     case types.CREATE_DIVISIONS:
       action.divisions.map(division => Division.upsert(division));
       break;
@@ -62,7 +58,6 @@ export const officeSelector = createSelector(
 
         return Object.assign({}, obj, {
           division: office.division.serialize(),
-          body: office.body.serialize(),
           officeholder: {
             person: officeholder.person.serialize(),
             party: officeholder.party.serialize(),

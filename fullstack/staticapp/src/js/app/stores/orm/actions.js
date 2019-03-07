@@ -1,10 +1,5 @@
 import * as types from './constants';
 
-export const createBodies = bodies => ({
-  type: types.CREATE_BODIES,
-  bodies,
-});
-
 export const createDivisions = divisions => ({
   type: types.CREATE_DIVISIONS,
   divisions,

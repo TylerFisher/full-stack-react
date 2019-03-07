@@ -2,27 +2,9 @@ import React from 'react';
 import Row from './Row';
 
 class Table extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentBody: 'senate',
-    };
-
-    this.changeBody = this.changeBody.bind(this);
-  }
-
-  changeBody() {
-    this.setState({
-      currentBody: this.state.currentBody === 'senate' ? 'house' : 'senate',
-    });
-  }
-
   render() {
-    const filteredOffices = this.props.offices.filter(office => office.body.slug === this.state.currentBody);
-
     return (
       <div className='wrapper'>
-        <button className='change-body' onClick={this.changeBody}>Change body</button>
         <table>
           <thead>
             <tr>
@@ -32,7 +14,7 @@ class Table extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {filteredOffices.map(office => (
+            {this.props.offices.map(office => (
               <Row office={office} key={office.id} />
             ))}
           </tbody>

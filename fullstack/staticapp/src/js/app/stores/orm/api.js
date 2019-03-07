@@ -10,10 +10,6 @@ const headers = {
 
 const GET = assign({}, headers, { method: 'GET' });
 
-function addBodies(bodies, dispatch) {
-  dispatch(actions.createBodies(bodies));
-}
-
 function addDivisions(divisions, dispatch) {
   dispatch(actions.createDivisions(divisions));
 }
@@ -37,15 +33,6 @@ function addParties(parties, dispatch) {
 function addPeople(people, dispatch) {
   dispatch(actions.createPeople(people));
 }
-
-const fetchBodies = () =>
-  dispatch => fetch('/api/bodies/', GET)
-    .then(response => response.json())
-    .then(data => Promise.all([
-      addBodies(data, dispatch),
-    ])).catch((error) => {
-      console.log('API Error fetchBodies', error, error.code);
-    });
 
 const fetchDivisions = () =>
   dispatch => fetch('/api/divisions/', GET)
@@ -103,7 +90,6 @@ const fetchPeople = () =>
 
 export const fetchData = () =>
   dispatch => Promise.all([
-    dispatch(fetchBodies()),
     dispatch(fetchDivisions()),
     dispatch(fetchDivisionLevels()),
     dispatch(fetchOffices()),

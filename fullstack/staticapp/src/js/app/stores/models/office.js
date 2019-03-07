@@ -14,7 +14,6 @@ class Office extends Model {
       short_label: attr(),
       senate_class: attr(),
       division: fk('Division'),
-      body: fk('Body'),
     };
   }
 }
